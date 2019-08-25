@@ -6,18 +6,28 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.util.ViewPreloadSizeProvider;
 import com.pritam.mvvm.R;
+import com.pritam.mvvm.models.Recipe;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView title, publisher, socialScore;
     ImageView image;
     OnRecipeListener onRecipeListener;
+    RequestManager requestManager;
+    ViewPreloadSizeProvider viewPreloadSizeProvider;
 
-    public RecipeViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener) {
+    public RecipeViewHolder(@NonNull View itemView,
+                            OnRecipeListener onRecipeListener,
+                            RequestManager requestManager,
+                            ViewPreloadSizeProvider preloadSizeProvider) {
         super(itemView);
 
         this.onRecipeListener = onRecipeListener;
+        this.requestManager = requestManager;
+        this.viewPreloadSizeProvider = preloadSizeProvider;
 
         title = itemView.findViewById(R.id.recipe_title);
         publisher = itemView.findViewById(R.id.recipe_publisher);
@@ -25,6 +35,19 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.On
         image = itemView.findViewById(R.id.recipe_image);
 
         itemView.setOnClickListener(this);
+    }
+
+    public void onBind(Recipe recipe){
+
+        requestManager
+                .load(recipe.getImage_url())
+                .into(image);
+
+        title.setText(recipe.getTitle());
+        publisher.setText(recipe.getPublisher());
+        socialScore.setText(String.valueOf(Math.round(recipe.getSocial_rank())));
+
+        viewPreloadSizeProvider.setView(image);
     }
 
     @Override

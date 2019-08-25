@@ -1,44 +1,47 @@
 package com.pritam.mvvm.viewmodels;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.pritam.mvvm.models.Recipe;
 import com.pritam.mvvm.repositories.RecipeRepository;
+import com.pritam.mvvm.util.Resource;
 
-public class RecipeViewModel extends ViewModel {
 
-    private RecipeRepository mRecipeRepository;
-    private String mRecipeId;
-    private boolean mDidRetrieveRecipe;
+public class RecipeViewModel extends AndroidViewModel {
 
-    public RecipeViewModel() {
-        mRecipeRepository = RecipeRepository.getInstance();
-        mDidRetrieveRecipe = false;
+    private RecipeRepository recipeRepository;
+
+    public RecipeViewModel(@NonNull Application application) {
+        super(application);
+        recipeRepository = RecipeRepository.getInstance(application);
     }
 
-    public LiveData<Recipe> getRecipe(){
-        return mRecipeRepository.getRecipe();
-    }
-
-    public LiveData<Boolean> isRecipeRequestTimedOut(){
-        return mRecipeRepository.isRecipeRequestTimedOut();
-    }
-
-    public void searchRecipeById(String recipeId){
-        mRecipeId = recipeId;
-        mRecipeRepository.searchRecipeById(recipeId);
-    }
-
-    public String getRecipeId() {
-        return mRecipeId;
-    }
-
-    public void setRetrievedRecipe(boolean retrievedRecipe){
-        mDidRetrieveRecipe = retrievedRecipe;
-    }
-
-    public boolean didRetrieveRecipe(){
-        return mDidRetrieveRecipe;
+    public LiveData<Resource<Recipe>> searchRecipeApi(String recipeId){
+        return recipeRepository.searchRecipesApi(recipeId);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

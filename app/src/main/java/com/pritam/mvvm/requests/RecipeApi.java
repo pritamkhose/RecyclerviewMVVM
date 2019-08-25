@@ -1,5 +1,9 @@
 package com.pritam.mvvm.requests;
 
+
+import androidx.lifecycle.LiveData;
+
+import com.pritam.mvvm.requests.responses.ApiResponse;
 import com.pritam.mvvm.requests.responses.RecipeResponse;
 import com.pritam.mvvm.requests.responses.RecipeSearchResponse;
 
@@ -11,7 +15,7 @@ public interface RecipeApi {
 
     // SEARCH
     @GET("api/search")
-    Call<RecipeSearchResponse> searchRecipe(
+    LiveData<ApiResponse<RecipeSearchResponse>> searchRecipe(
             @Query("key") String key,
             @Query("q") String query,
             @Query("page") String page
@@ -19,7 +23,7 @@ public interface RecipeApi {
 
     // GET RECIPE REQUEST
     @GET("api/get")
-    Call<RecipeResponse> getRecipe(
+    LiveData<ApiResponse<RecipeResponse>> getRecipe(
             @Query("key") String key,
             @Query("rId") String recipe_id
     );

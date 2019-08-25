@@ -1,5 +1,7 @@
 package com.pritam.mvvm.requests.responses;
 
+import androidx.annotation.Nullable;
+
 import com.pritam.mvvm.models.Recipe;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -16,10 +18,19 @@ public class RecipeSearchResponse {
     @Expose()
     private List<Recipe> recipes;
 
+    @SerializedName("error")
+    @Expose()
+    private String error;
+
+    public String getError() {
+        return error;
+    }
+
     public int getCount() {
         return count;
     }
 
+    @Nullable
     public List<Recipe> getRecipes() {
         return recipes;
     }
@@ -29,6 +40,7 @@ public class RecipeSearchResponse {
         return "RecipeSearchResponse{" +
                 "count=" + count +
                 ", recipes=" + recipes +
+                ", error='" + error + '\'' +
                 '}';
     }
 }
